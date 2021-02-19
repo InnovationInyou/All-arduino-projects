@@ -1,0 +1,90 @@
+#include <DigisparkOLED.h>
+#include <Tiny4kOLED.h>
+#include <Wire.h>
+#include <TinyWireM.h>
+// ============================================================================
+
+//#include "img0_128x64c1.h"
+#include "digistump_128x64c1.h"
+uint8_t location = 0;
+bool leftToRight = true;
+
+void setup() {
+  // put your setup code here, to run once:
+
+  oled.begin();
+oled.enableChargePump();
+ oled.setRotation(1);
+ oled.setInternalIref(true);
+oled.enableZoomIn();
+oled.setFont(FONT8X16);
+updateDisplay();
+#ifndef NO_DOUBLE_BUFFERING
+oled.switchRenderFrame();
+ updateDisplay();
+ oled.switchFrame();
+#endif
+ oled.on();
+}
+
+void loop() {
+  
+  // put your main code here, to run repeatedly:
+  oled.fill(0xFF); //fill screen with color
+  delay(1000);
+  oled.clear(); //all black
+  delay(1000);
+  //usage: oled.setCursor(X IN PIXELS, Y IN ROWS OF 8 PIXELS STARTING WITH 0);
+ if (leftToRight) {
+    location++;
+    if (location == 40) {
+      leftToRight = false;
+    }
+    } else {
+    location--;
+    if (location == 0) {
+      leftToRight = true;
+    }
+  }
+  updateDisplay();
+  #ifndef NO_DOUBLE_BUFFERING
+ oled.switchFrame();
+ #endif
+
+  //oled.setFont(FONT6X8);
+  //oled.print(F(" OLED!"));
+  //oled.setCursor(0, 0); //two rows down because the 8x16 font takes two rows of 8
+  //oled.println(F("test")); //println will move the cursor 8 or 16 pixels down (based on the front) and back to X=0
+  //oled.print(F("test test test test test")); //lines auto wrap
+  
+  delay(3000);
+  //usage oled.bitmap(START X IN PIXELS, START Y IN ROWS OF 8 PIXELS, END X IN PIXELS, END Y IN ROWS OF 8 PIXELS, IMAGE ARRAY);
+  //oled.bitmap(0, 0, 128, 8, img0_128x64c1);
+  //delay(3000);
+  oled.bitmap(0, 0, 128, 8, digistumplogo);
+  delay(3000);
+}
+
+
+void updateDisplay() {
+  // Clear whatever random data has been left in memory.
+  oled.clear();
+
+  // Position the text cursor
+  // In order to keep the library size small, text can only be positioned
+  // with the top of the font aligned with one of the four 8 bit high RAM pages.
+  // The Y value therefore can only have the value 0, 1, 2, or 3.
+  // usage: oled.setCursor(X IN PIXELS, Y IN ROWS OF 8 PIXELS STARTING WITH 0);
+  oled.setCursor(location, 0);
+
+  // Write text to oled RAM.
+  oled.print(F("  IMPETUS"));
+
+  // Write the number of milliseconds since power on.
+  //oled.print(millis());
+
+  // Write it again
+  oled.setCursor(location, 2);
+  oled.print(F("M E M B E R"));
+  //oled.print(millis());
+}

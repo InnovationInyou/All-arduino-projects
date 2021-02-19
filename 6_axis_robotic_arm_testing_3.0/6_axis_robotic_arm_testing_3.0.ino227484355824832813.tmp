@@ -1,0 +1,16 @@
+char data = 0;
+void setup() {
+  Serial.begin(9600); 
+}
+void loop() {
+ if (Serial.available()>0)
+  {
+    unsigned int servopos=Serial.read();
+    unsigned int servopos1=Serial.read();
+    unsigned int realservo= servopos + servopos1;
+    Serial.print(realservo);
+    Serial.print("\n");
+    
+   
+  }
+}

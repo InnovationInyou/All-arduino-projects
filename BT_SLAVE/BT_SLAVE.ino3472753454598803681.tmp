@@ -1,0 +1,104 @@
+char data=0;
+#include <Wire.h>
+#include <Adafruit_PWMServoDriver.h>
+Adafruit_PWMServoDriver pwm = Adafruit_PWMServoDriver();
+#define SERVOMIN  125 
+#define SERVOMAX  575 
+uint8_t servonum1 = 0;
+uint8_t servonum2 = 1;
+uint8_t servonum3 = 2;
+uint8_t servonum4 = 3;
+uint8_t servonum5 = 4;
+uint8_t servonum6 = 5;
+void setup() {
+  
+Serial.begin(9600);
+  pinMode(5,OUTPUT);
+  pinMode(6,OUTPUT);
+  pinMode(10,OUTPUT);
+  pinMode(11,OUTPUT);
+}
+
+void loop() {
+ if(Serial.available()>0)
+ {
+  data=Serial.read();
+  Serial.print(data);
+  if(data == 'F') 
+      {  
+              
+        digitalWrite(5, HIGH);
+        digitalWrite(6, LOW);
+        digitalWrite(10, LOW);
+        digitalWrite(11, HIGH);
+      }   
+       if(data == 'B') 
+      {        
+         digitalWrite(5, LOW);
+        digitalWrite(6, HIGH);
+        digitalWrite(10, HIGH);
+        digitalWrite(11, LOW);   
+         
+  }
+  if(data == 'L') 
+      {        
+         digitalWrite(5, LOW);
+         digitalWrite(6, HIGH);
+         digitalWrite(10, LOW);
+         digitalWrite(11, HIGH);    
+         
+  }
+  if(data == 'R') 
+      {        
+         digitalWrite(5, HIGH);
+         digitalWrite(6, LOW);
+         digitalWrite(10, HIGH);
+         digitalWrite(11, LOW);
+         
+  }
+  if(data== ' ')
+      {        
+         digitalWrite(5, LOW);
+         digitalWrite(6, LOW);
+         digitalWrite(10, LOW);
+         digitalWrite(11, LOW);
+          }
+    if( data>=1000 && data<2000)
+  {
+    int servo1=data;
+    servo1=map(servo1,1000, 2000, SERVOMIN,SERVOMAX);
+    pwm.setPWM(servonum1, 0, servo1 );
+  }
+
+  if( data>=3000 && data<4000)
+  {
+    int servo2=data;
+    servo2=map(servo2,3000, 4000, SERVOMIN,SERVOMAX);
+    pwm.setPWM(servonum2, 1, servo2 );
+  }
+  if( data>=5000 && data<6000)
+  {
+    int servo3=data;
+    servo3=map(servo3,5000, 6000, SERVOMIN,SERVOMAX);
+    pwm.setPWM(servonum3, 2, servo3 );
+  }
+  if( data>=7000 && data<8000)
+  {
+    int servo4=data;
+   servo4=map(servo4,7000, 8000, SERVOMIN,SERVOMAX);
+    pwm.setPWM(servonum4, 3, servo4 );
+  }
+  if( data>=9000 && data<10000)
+  {
+    int servo5 =data;
+    servo5=map(servo5,9000, 10000, SERVOMIN,SERVOMAX);
+    pwm.setPWM(servonum5, 4, servo5 );
+  }
+  if( data>=11000 && data<12000)
+  {
+    int servo6=data;
+    servo6=map(servo6,11000, 12000, SERVOMIN,SERVOMAX);
+    pwm.setPWM(servonum6, 5, servo6 );
+  }
+ }
+}

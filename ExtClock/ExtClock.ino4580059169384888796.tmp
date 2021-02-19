@@ -1,0 +1,35 @@
+
+#include <Wire.h>
+#include "RTClib.h"
+#include "SevenSegmentTM1637.h"
+#include "SevenSegmentExtended.h"
+RTC_DS1307 rtc;
+/* initialize global TM1637 Display object
+*  The constructor takes two arguments, the number of the clock pin and the digital output pin:
+* SevenSegmentTM1637(byte pinCLK, byte pinDIO);
+*/
+const byte PIN_CLK = 2;   // define CLK pin (any digital pin)
+const byte PIN_DIO = 3;   // define DIO pin (any digital pin)
+SevenSegmentExtended      display(PIN_CLK, PIN_DIO);
+
+const unsigned int clockSpeed = 10000;    // speed up clock for demo
+
+// run setup code
+void setup() {
+  Serial.begin(9600);         // initializes the Serial connection @ 9600 baud
+  display.begin();            // initializes the display
+  display.setBacklight(10);  // set the brightness to 100 %
+  delay(1000);   
+   rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));// wait 1000 ms
+};
+
+// run loop (forever)
+void loop() {
+  DateTime now = rtc.now();
+    
+  byte hours    = now.hour();                           // initialize hours
+  byte minutes  = now.minute();                           // initialize minutes
+
+  display.printTime(hours, minutes, true);  // display time
+  delay(60000 / clockSpeed);                // clock delay ms
+  }

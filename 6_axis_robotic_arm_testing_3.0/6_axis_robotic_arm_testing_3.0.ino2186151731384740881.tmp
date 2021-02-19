@@ -1,0 +1,11 @@
+char servopos = 0;
+#include <Servo.h>
+Servo myservo1;
+void setup() {
+  Serial.begin(9600);
+  myservo1.attach(4); 
+}
+void loop() {
+   myservo1.write(90);
+   delay(100);
+   }

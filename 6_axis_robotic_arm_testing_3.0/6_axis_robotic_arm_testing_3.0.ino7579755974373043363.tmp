@@ -1,0 +1,18 @@
+char data = 0;
+void setup() {
+  Serial.begin(9600); 
+}
+void loop() {
+ if (Serial.available()>=2)
+  {
+    
+    unsigned int realservo=Serial.read();
+    Serial.println(realservo);
+    Serial.print("\n");
+    
+    if (realservo>=1000 && realservo<1180)
+    {
+      Serial.println("servo1 is ON");
+    }
+  }
+}

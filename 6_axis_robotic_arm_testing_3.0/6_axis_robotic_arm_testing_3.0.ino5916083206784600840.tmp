@@ -1,0 +1,18 @@
+char data = 0;
+#include <Servo.h>
+Servo myservo1;
+void setup() {
+  Serial.begin(9600);
+  myservo1.attach(4); 
+}
+void loop() {
+ if (Serial.available()>0)
+  {
+    
+    char servopos=Serial.read();
+    char realservo= servopos;
+    int data = servopos;
+      myservo1.write(servopos);
+     
+  }
+}
